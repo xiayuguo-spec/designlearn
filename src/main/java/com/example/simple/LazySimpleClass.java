@@ -3,19 +3,21 @@ package com.example.simple;
 /**
  * 懒汉模式
  */
-public class SimpleClass {
+public class LazySimpleClass {
 
-    private static SimpleClass simpleClass;
+    private static LazySimpleClass simpleClass;
 
-    public SimpleClass() {
+
+    public LazySimpleClass() {
+
     }
 
-    public static SimpleClass ins(){
+    public static LazySimpleClass ins(){
         /**
          * 多线程的时候可能会出现多个实例 加锁
          */
         if (simpleClass == null){
-            simpleClass = new SimpleClass();
+            simpleClass = new LazySimpleClass();
         }
         return simpleClass;
     }
@@ -24,11 +26,11 @@ public class SimpleClass {
      * 加锁之后性能损耗  可能重排序 空指针 使用volatile
      * @return
      */
-    public static SimpleClass ins1(){
+    public static LazySimpleClass ins1(){
         if (simpleClass == null){
-            synchronized(SimpleClass.class){
+            synchronized(LazySimpleClass.class){
                 if (simpleClass == null){
-                    simpleClass = new SimpleClass();
+                    simpleClass = new LazySimpleClass();
                     // 字节码
                     // JIT 即时编译
                     // 分配空间
@@ -40,4 +42,11 @@ public class SimpleClass {
         }
         return simpleClass;
     }
+
+    public void test(){
+        InnerSingleClass.getIns();
+
+    }
+
+
 }
